@@ -107,6 +107,7 @@ public class MyPicturePane extends PicturePane {
 		for (i = 0; i < getPicWidth()-1; i++){
 			for (j=0; j < getPicHeight()-1; j++){
 				int curr = _pixelArray[i][j];
+				// hey !
 				 
 			}
 		}

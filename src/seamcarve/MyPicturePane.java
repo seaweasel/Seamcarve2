@@ -21,6 +21,7 @@ import support.seamcarve.*;
 public class MyPicturePane extends PicturePane {
 	private int[][] _pixelArray;
 	private String _picture;
+	private int _colorValue;
 	
 	/**
 	 * The constructor accepts an image filename as a String and passes
@@ -81,6 +82,7 @@ public class MyPicturePane extends PicturePane {
 			int	currPixel = _pixelArray[i][j];
 			// use helper method to calculate the color value 
 			Color currColor = getPixelColor(i,j);
+			System.out.println(currColor);
 			
 			//int currColorValue = (int) (currColor.getRed() + currColor.getGreen() + currColor.getBlue());
 			int currColorValue = 0;
@@ -103,16 +105,16 @@ public class MyPicturePane extends PicturePane {
 				return sum;
 			}
 		
-	public void getColorSum(int i, int j, int cur){
-		for (i = 0; i < getPicWidth()-1; i++){
-			for (j=0; j < getPicHeight()-1; j++){
-				int curr = _pixelArray[i][j];
-				// hey !
-				 
-			}
-		}
+	public int getColorSum(int i, int j){
+			//int x = _pixelArray[i][j];
+			Color color = getPixelColor(i,j);
+			_colorValue = (int) (color.getRed() + color.getBlue() + color.getGreen());
+ 			return _colorValue;
 	}
 		
-	
+	public void findColorDifference(int i, int j){
+		
+				int x = _pixelArray[i][j];		
+	}
 
 }

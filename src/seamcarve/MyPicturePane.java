@@ -2,10 +2,13 @@ package seamcarve;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.awt.Point;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+
 import support.seamcarve.*;
+
 
 /**
  * This class is your seam carving picture pane. It is a subclass of
@@ -89,8 +92,8 @@ public class MyPicturePane extends PicturePane {
 				 */
 				
 				
-				for (Iterator<Integer> n = neighbors.iterator(); n.hasNext();) {
-					Integer neighbor = n.next();
+				for (Iterator<Point> n = neighbors.iterator(); n.hasNext();) {
+					Point neighbor = n.next();
 					// TODO -- write code here
 					// calculate difference magnitude between pixel and neighbor
 					// here
@@ -100,13 +103,14 @@ public class MyPicturePane extends PicturePane {
 
 
 					// get color of neighbor (see line 80,81)
-					//int neighbColor = -1;
-					Color neighbColor = neighbor.getPixelColor();
-
+					
+					Color neighbColor = getPixelColor((int) neighbor.getX(), (int) neighbor.getY());
+					int neighbColorValue = (int) (neighbColor.getRed() + neighbColor.getBlue() + neighbColor.getGreen());
 					// absolute value of difference between two
-					int diff = Math.abs(colorValue - neighbColor);
+					int diff = Math.abs(colorValue - neighbColorValue);
 
 					// put in values array
+					_colorImportance[i][j] = diff;
 				}
 			}
 		}
@@ -119,28 +123,32 @@ public class MyPicturePane extends PicturePane {
 		 * can vary between 2-4
 		 */
 		// TODO -- do code here
-		ArrayList<Integer> neighbs = new ArrayList();
+		ArrayList<Point> neighbs = new ArrayList();
 		// top
 		try {
-			neighbs.add(new Integer(_pixelArray[row][col - 1]));
+			int pixel = _pixelArray[row-1][col];
+			neighbs.add(new Point(row-1, col));
 		} catch (IndexOutOfBoundsException whatever) {
 		}
 		// right
 		
 		try {
-			neighbs.add(new Integer(_pixelArray[row+1][col]));
+			int pixel = _pixelArray[row][col+1];
+			neighbs.add(new Point(row, col+1));
 		} catch (IndexOutOfBoundsException whatever) {
 		}
 		// bottom
 		
 		try {
-			neighbs.add(new Integer(_pixelArray[row][col+1]));
+			int pixel = _pixelArray[row+1][col];
+			neighbs.add(new Point(row+1, col));
 		} catch (IndexOutOfBoundsException whatever) {
 		}
 		// left
 		
 		try {
-			neighbs.add(new Integer(_pixelArray[row-1][col]));
+			int pixel = _pixelArray[row][col-1];
+			neighbs.add(new Point(row, col-1));
 		} catch (IndexOutOfBoundsException whatever) {
 		}
 		return neighbs;

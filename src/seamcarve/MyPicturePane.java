@@ -77,8 +77,8 @@ public class MyPicturePane extends PicturePane {
 			for (int j = 0; j < getPicHeight() - 1; j++) {
 				int currPixel = _pixelArray[i][j];
 				// use helper method to calculate the color value
-				Color currColor = getPixelColor(i, j);
-				int colorValue = (int) (currColor.getRed() + currColor.getBlue() + currColor.getGreen());
+			//	Color currColor = getPixelColor(i, j);
+			//	int colorValue = (int) (currColor.getRed() + currColor.getBlue() + currColor.getGreen());
 
 				// get adjacent pixels:
 				ArrayList neighbors = getAdjacentPixels(i, j);
@@ -87,14 +87,21 @@ public class MyPicturePane extends PicturePane {
 				/*
 				 * _colorImportance[i][j] = something
 				 */
+				
+				
 				for (Iterator<Integer> n = neighbors.iterator(); n.hasNext();) {
 					Integer neighbor = n.next();
 					// TODO -- write code here
 					// calculate difference magnitude between pixel and neighbor
 					// here
+					
+					Color currColor = getPixelColor(i,j);
+					int colorValue = (int) (currColor.getRed() + currColor.getBlue() + currColor.getGreen());
+
 
 					// get color of neighbor (see line 80,81)
-					int neighbColor = -1;
+					//int neighbColor = -1;
+					Color neighbColor = neighbor.getPixelColor();
 
 					// absolute value of difference between two
 					int diff = Math.abs(colorValue - neighbColor);
@@ -117,14 +124,25 @@ public class MyPicturePane extends PicturePane {
 		try {
 			neighbs.add(new Integer(_pixelArray[row][col - 1]));
 		} catch (IndexOutOfBoundsException whatever) {
-
 		}
 		// right
-
+		
+		try {
+			neighbs.add(new Integer(_pixelArray[row+1][col]));
+		} catch (IndexOutOfBoundsException whatever) {
+		}
 		// bottom
-
+		
+		try {
+			neighbs.add(new Integer(_pixelArray[row][col+1]));
+		} catch (IndexOutOfBoundsException whatever) {
+		}
 		// left
-
+		
+		try {
+			neighbs.add(new Integer(_pixelArray[row-1][col]));
+		} catch (IndexOutOfBoundsException whatever) {
+		}
 		return neighbs;
 	}
 

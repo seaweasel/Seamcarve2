@@ -9,7 +9,6 @@ import javafx.scene.paint.Color;
 
 import support.seamcarve.*;
 
-
 /**
  * This class is your seam carving picture pane. It is a subclass of
  * PicturePane, an abstract class that takes care of all the drawing,
@@ -28,6 +27,8 @@ public class MyPicturePane extends PicturePane {
 	private int[][] _pixelArray;
 	private int[][] _colorImportance;
 	private String _picture;
+	private int[][] _costsArray;
+	private int[][] _dirsArray;
 
 	/**
 	 * The constructor accepts an image filename as a String and passes it to
@@ -43,6 +44,8 @@ public class MyPicturePane extends PicturePane {
 		filename = _picture;
 		_pixelArray = new int[getPicWidth()][getPicHeight()];
 		_colorImportance = new int[getPicWidth()][getPicHeight()];
+		_costsArray = new int[getPicWidth()][getPicHeight()];
+		_dirsArray = new int[getPicWidth()][getPicHeight()];
 	}
 
 	/**
@@ -80,8 +83,9 @@ public class MyPicturePane extends PicturePane {
 			for (int j = 0; j < getPicHeight() - 1; j++) {
 				int currPixel = _pixelArray[i][j];
 				// use helper method to calculate the color value
-			//	Color currColor = getPixelColor(i, j);
-			//	int colorValue = (int) (currColor.getRed() + currColor.getBlue() + currColor.getGreen());
+				// Color currColor = getPixelColor(i, j);
+				// int colorValue = (int) (currColor.getRed() +
+				// currColor.getBlue() + currColor.getGreen());
 
 				// get adjacent pixels:
 				ArrayList neighbors = getAdjacentPixels(i, j);
@@ -90,22 +94,21 @@ public class MyPicturePane extends PicturePane {
 				/*
 				 * _colorImportance[i][j] = something
 				 */
-				
-				
+
 				for (Iterator<Point> n = neighbors.iterator(); n.hasNext();) {
 					Point neighbor = n.next();
 					// TODO -- write code here
 					// calculate difference magnitude between pixel and neighbor
 					// here
-					
-					Color currColor = getPixelColor(i,j);
+
+					Color currColor = getPixelColor(i, j);
 					int colorValue = (int) (currColor.getRed() + currColor.getBlue() + currColor.getGreen());
 
-
 					// get color of neighbor (see line 80,81)
-					
+
 					Color neighbColor = getPixelColor((int) neighbor.getX(), (int) neighbor.getY());
-					int neighbColorValue = (int) (neighbColor.getRed() + neighbColor.getBlue() + neighbColor.getGreen());
+					int neighbColorValue = (int) (neighbColor.getRed() + neighbColor.getBlue()
+							+ neighbColor.getGreen());
 					// absolute value of difference between two
 					int diff = Math.abs(colorValue - neighbColorValue);
 
@@ -126,46 +129,97 @@ public class MyPicturePane extends PicturePane {
 		ArrayList<Point> neighbs = new ArrayList();
 		// top
 		try {
-			int pixel = _pixelArray[row-1][col];
-			neighbs.add(new Point(row-1, col));
+			int pixel = _pixelArray[row - 1][col];
+			neighbs.add(new Point(row - 1, col));
 		} catch (IndexOutOfBoundsException whatever) {
 		}
 		// right
-		
+
 		try {
-			int pixel = _pixelArray[row][col+1];
-			neighbs.add(new Point(row, col+1));
+			int pixel = _pixelArray[row][col + 1];
+			neighbs.add(new Point(row, col + 1));
 		} catch (IndexOutOfBoundsException whatever) {
 		}
 		// bottom
-		
+
 		try {
-			int pixel = _pixelArray[row+1][col];
-			neighbs.add(new Point(row+1, col));
+			int pixel = _pixelArray[row + 1][col];
+			neighbs.add(new Point(row + 1, col));
 		} catch (IndexOutOfBoundsException whatever) {
 		}
 		// left
-		
+
 		try {
-			int pixel = _pixelArray[row][col-1];
-			neighbs.add(new Point(row, col-1));
+			int pixel = _pixelArray[row][col - 1];
+			neighbs.add(new Point(row, col - 1));
 		} catch (IndexOutOfBoundsException whatever) {
 		}
 		return neighbs;
 	}
 
 	public void calcCostsAndDirs() {
-		// TODO -- write code here
 		// costs[row][col] = min(costs[row+1][col-1 to col+1]) + vals[row]..ish
-
-		// fill in costs array && dirs array
-		
-		//costs is same size as vals array
-		
-		//dirs has same height as width of costs array
-		//dirs has width = height of costs array - 1
-		//single row in dirs = directions for a single seam from picture
 	
+		// fill in bottom row of costs 
+		for (int j = 0; j < getPicWidth(); j++){
+			_costsArray[getPicHeight()-1][j] = _colorImportance[getPicHeight()-1][j];
+		}
+		
+		for (int row = getPicHeight() - 2; row >= 0; row--) {
+			for (int col = 0; col < getPicWidth(); col++) {
+				// fill in costs array && dirs array
+				// find bottom row neighbors
+				
+					
+				Integer bottomLeft = null;
+				Integer bottom = null;
+				Integer bottomRight = null;
+				
+				try{
+					 bottomLeft = _colorImportance[row + 1][col - 1];
+				} catch (IndexOutOfBoundsException whatever) {
+					}
+				try{
+					 bottom = _colorImportance[row + 1][col];
+				} catch (IndexOutOfBoundsException whatever) {
+					}
+				try{
+					 bottomRight = _colorImportance[row + 1][col + 1];
+				} catch (IndexOutOfBoundsException whatever) {
+					}
+				
+				// value of smallest obtained
+				Integer smallest = bottomLeft;
+				int dir = -1;
+				if (bottomLeft == null || bottomLeft > bottom){
+					smallest = bottom;
+					 dir = 0;
+				}
+				if (bottomRight != null && bottom > bottomRight){
+					smallest = bottomRight;
+					dir = 1;
+				}
+		
+				
+				int cost = _colorImportance[row][col] + smallest;
+				
+				
+				
+				
+				
+				
+
+
+				// get minimum
+
+				// set value in cost array
+
+				// single row in dirs = directions for a single seam from
+				// picture
+			}
+
+		}
+
 	}
 
 }

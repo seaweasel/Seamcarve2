@@ -42,10 +42,10 @@ public class MyPicturePane extends PicturePane {
 		String defaultFileName = "/Users/Akhil/Pictures/honey.jpg";
 		defaultFileName = filename;
 		filename = _picture;
-		_pixelArray = new int[getPicWidth()][getPicHeight()];
-		_colorImportance = new int[getPicWidth()][getPicHeight()];
-		_costsArray = new int[getPicWidth()][getPicHeight()];
-		_dirsArray = new int[getPicWidth()][getPicHeight()];
+		_pixelArray = new int[getPicWidth() - 1][getPicHeight() - 1];
+		_colorImportance = new int[getPicWidth() - 1][getPicHeight() - 1];
+		_costsArray = new int[getPicWidth() - 1][getPicHeight() - 1];
+		_dirsArray = new int[getPicWidth() - 1][getPicHeight() - 2];
 	}
 
 	/**
@@ -74,8 +74,35 @@ public class MyPicturePane extends PicturePane {
 	 * @return the lowest cost seam of the current image
 	 */
 	protected int[] findLowestCostSeam() {
-		// TODO: Your code here
-		return null;
+	
+		// Returns index of min in top row
+		int min_col = findMin(_costsArray[0]);
+		//lowest cost seam
+		int[] seam = new int[getPicHeight()];
+		
+		seam[0] = _costsArray[0][min_col];
+		for(int row = 0; row < getPicHeight()-2; row++){
+			seam[row+1] = seam[row] + _dirsArray[seam[row]][row];
+		}
+		
+		return seam;
+	}
+	
+	/*
+	 * return index of lowest element in int array
+	 */
+	public int findMin(int[] nums){
+		int minValue = nums[0];
+		int minDex = 0;
+		
+		for(int i = 0; i < nums.length; i++){
+			if(nums[i] < minValue){
+				minValue = nums[i];
+				minDex = i;
+			}
+		}
+		
+		return minDex;
 	}
 
 	public void calculateColorImportance() {
@@ -159,63 +186,53 @@ public class MyPicturePane extends PicturePane {
 
 	public void calcCostsAndDirs() {
 		// costs[row][col] = min(costs[row+1][col-1 to col+1]) + vals[row]..ish
-	
-		// fill in bottom row of costs 
-		for (int j = 0; j < getPicWidth(); j++){
-			_costsArray[getPicHeight()-1][j] = _colorImportance[getPicHeight()-1][j];
+
+		// fill in bottom row of costs
+		for (int j = 0; j < getPicWidth(); j++) {
+			_costsArray[getPicHeight() - 1][j] = _colorImportance[getPicHeight() - 1][j];
 		}
-		
+
+		// in case two seams have the same cost, pick the first seam from the
+		// left
 		for (int row = getPicHeight() - 2; row >= 0; row--) {
 			for (int col = 0; col < getPicWidth(); col++) {
 				// fill in costs array && dirs array
 				// find bottom row neighbors
-				
-					
+
 				Integer bottomLeft = null;
 				Integer bottom = null;
 				Integer bottomRight = null;
-				
-				try{
-					 bottomLeft = _colorImportance[row + 1][col - 1];
+
+				// find column of lowest downstairs neighbor
+				try {
+					bottomLeft = _colorImportance[row + 1][col - 1];
 				} catch (IndexOutOfBoundsException whatever) {
-					}
-				try{
-					 bottom = _colorImportance[row + 1][col];
+				}
+				try {
+					bottom = _colorImportance[row + 1][col];
 				} catch (IndexOutOfBoundsException whatever) {
-					}
-				try{
-					 bottomRight = _colorImportance[row + 1][col + 1];
+				}
+				try {
+					bottomRight = _colorImportance[row + 1][col + 1];
 				} catch (IndexOutOfBoundsException whatever) {
-					}
-				
-				// value of smallest obtained
+				}
+
+				// value of least cost seam below this row
+				// also calculate dir value
 				Integer smallest = bottomLeft;
 				int dir = -1;
-				if (bottomLeft == null || bottomLeft > bottom){
+				if (bottomLeft == null || bottomLeft > bottom) {
 					smallest = bottom;
-					 dir = 0;
+					dir = 0;
 				}
-				if (bottomRight != null && bottom > bottomRight){
+				if (bottomRight != null && bottom > bottomRight) {
 					smallest = bottomRight;
 					dir = 1;
 				}
-		
-				
+
 				int cost = _colorImportance[row][col] + smallest;
-				
-				
-				
-				
-				
-				
-
-
-				// get minimum
-
-				// set value in cost array
-
-				// single row in dirs = directions for a single seam from
-				// picture
+				_costsArray[row][col] = cost;
+				_dirsArray[row][col] = dir;
 			}
 
 		}

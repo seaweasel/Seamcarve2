@@ -42,10 +42,11 @@ public class MyPicturePane extends PicturePane {
 		String defaultFileName = "/Users/Akhil/Pictures/honey.jpg";
 		defaultFileName = filename;
 		filename = _picture;
-		_pixelArray = new int[getPicWidth() - 1][getPicHeight() - 1];
-		_colorImportance = new int[getPicWidth() - 1][getPicHeight() - 1];
-		_costsArray = new int[getPicWidth() - 1][getPicHeight() - 1];
-		_dirsArray = new int[getPicWidth() - 1][getPicHeight() - 2];
+		
+		_pixelArray = new int[getPicWidth()][getPicHeight()];
+		_colorImportance = new int[getPicWidth()][getPicHeight()];
+		_costsArray = new int[getPicWidth()][getPicHeight()];
+		_dirsArray = new int[getPicWidth()][getPicHeight() - 1];
 	}
 
 	/**
@@ -106,6 +107,8 @@ public class MyPicturePane extends PicturePane {
 	}
 
 	public void calculateColorImportance() {
+		//replace i/j with col/row
+		//swap getPicWidth() a& getPicHeight() below
 		for (int i = 0; i < getPicWidth(); i++) {
 			for (int j = 0; j < getPicHeight() - 1; j++) {
 				int currPixel = _pixelArray[i][j];

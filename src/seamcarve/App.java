@@ -36,7 +36,8 @@ public class App extends Application {
 		// Default filename to start off with when user has not chosen any other image file
 	//	TODO change this back when handing in project 
 		//String defaultFilename = "/course/cs0160/lib/seamcarve-images/honey.jpg";
-		String defaultFilename = "/Users/Akhil/Pictures/honey.jpg";
+//		String defaultFilename = "/Users/Akhil/Pictures/honey.jpg";
+		String defaultFilename = "/Users/Zorro/Pictures/honey.jpg";
 		
 		// Set up the root border pane and pass it to an instance of PicturePane to set up the images
 		BorderPane pane = new BorderPane();

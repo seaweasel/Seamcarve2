@@ -43,13 +43,13 @@ public class MyPicturePane extends PicturePane {
 		defaultFileName = filename;
 		filename = _picture;
 		
-		_pixelArray = new int[getPicWidth()][getPicHeight()];
-		_colorImportance = new int[getPicWidth()][getPicHeight()];
-		_costsArray = new int[getPicWidth()][getPicHeight()];
-		_dirsArray = new int[getPicWidth()][getPicHeight() - 1];
+		_pixelArray = new int[getPicHeight()][getPicWidth()];
+		_colorImportance = new int[getPicHeight()][getPicWidth()];
+		_costsArray = new int[getPicHeight()][getPicWidth()];
+		_dirsArray = new int[getPicHeight()-1][getPicWidth()];
 		
-		this.calculateColorImportance();
-		this.calcCostsAndDirs();
+		calculateColorImportance();
+		calcCostsAndDirs();
 	}
 
 	/**
@@ -117,13 +117,13 @@ public class MyPicturePane extends PicturePane {
 				//int currPixel = _pixelArray[row][col];
 
 				// get adjacent pixels:
-				ArrayList neighbors = getAdjacentPixels(row, col);
+				ArrayList<Point> neighbors = getAdjacentPixels(row, col);
 
 				// iterate on neighbors to calculate color importance
 				/*
 				 * _colorImportance[i][j] = something
 				 */
-
+				int totalDiff = 0;
 				for (Iterator<Point> n = neighbors.iterator(); n.hasNext();) {
 					Point neighbor = n.next();
 					// TODO -- write code here
@@ -131,23 +131,27 @@ public class MyPicturePane extends PicturePane {
 					// here
 
 					Color currColor = getPixelColor(row, col);
-					int colorValue = (int) (currColor.getRed() + currColor.getBlue() + currColor.getGreen());
+					int colorValue = (int) (255* currColor.getRed() + 255 * currColor.getBlue() + 255 * currColor.getGreen());
 
-					Color neighbColor = getPixelColor((int) neighbor.getX(), (int) neighbor.getY());
-					int neighbColorValue = (int) (neighbColor.getRed() + neighbColor.getBlue()
-							+ neighbColor.getGreen());
+					Color neighbColor = getPixelColor((int) neighbor.getY(), (int) neighbor.getX());
+					int neighbColorValue = (int) (255 * neighbColor.getRed() + 255 * neighbColor.getBlue()
+							+ 255 * neighbColor.getGreen());
 					// absolute value of difference between two
 					int diff = Math.abs(colorValue - neighbColorValue);
 
 					// put in values array
 					
-					_colorImportance[row][col] = diff;
+					totalDiff  += diff;
+					int x = 0;
 				}
+				_colorImportance[row][col] = totalDiff;
+				int x = 1;
+				
 			}
 		}
 	}
 
-	public ArrayList getAdjacentPixels(int row, int col) {
+	public ArrayList<Point> getAdjacentPixels(int row, int col) {
 		/*
 		 * return a list of the pixels adjacent to pixel(row, col)
 		 * 
@@ -158,28 +162,28 @@ public class MyPicturePane extends PicturePane {
 		// top
 		try {
 			int pixel = _pixelArray[row - 1][col];
-			neighbs.add(new Point(row - 1, col));
+			neighbs.add(new Point(col, row - 1));
 		} catch (IndexOutOfBoundsException whatever) {
 		}
 		// right
 
 		try {
 			int pixel = _pixelArray[row][col + 1];
-			neighbs.add(new Point(row, col + 1));
+			neighbs.add(new Point(col + 1, row));
 		} catch (IndexOutOfBoundsException whatever) {
 		}
 		// bottom
 
 		try {
 			int pixel = _pixelArray[row + 1][col];
-			neighbs.add(new Point(row + 1, col));
+			neighbs.add(new Point(col, row + 1));
 		} catch (IndexOutOfBoundsException whatever) {
 		}
 		// left
 
 		try {
 			int pixel = _pixelArray[row][col - 1];
-			neighbs.add(new Point(row, col - 1));
+			neighbs.add(new Point(col - 1, row));
 		} catch (IndexOutOfBoundsException whatever) {
 		}
 		return neighbs;

@@ -47,6 +47,9 @@ public class MyPicturePane extends PicturePane {
 		_colorImportance = new int[getPicWidth()][getPicHeight()];
 		_costsArray = new int[getPicWidth()][getPicHeight()];
 		_dirsArray = new int[getPicWidth()][getPicHeight() - 1];
+		
+		this.calculateColorImportance();
+		this.calcCostsAndDirs();
 	}
 
 	/**
@@ -82,7 +85,7 @@ public class MyPicturePane extends PicturePane {
 		int[] seam = new int[getPicHeight()];
 		
 		seam[0] = _costsArray[0][min_col];
-		for(int row = 0; row < getPicHeight()-2; row++){
+		for(int row = 0; row < getPicHeight()-1; row++){
 			seam[row+1] = seam[row] + _dirsArray[seam[row]][row];
 		}
 		
@@ -109,16 +112,12 @@ public class MyPicturePane extends PicturePane {
 	public void calculateColorImportance() {
 		//replace i/j with col/row
 		//swap getPicWidth() a& getPicHeight() below
-		for (int i = 0; i < getPicWidth(); i++) {
-			for (int j = 0; j < getPicHeight() - 1; j++) {
-				int currPixel = _pixelArray[i][j];
-				// use helper method to calculate the color value
-				// Color currColor = getPixelColor(i, j);
-				// int colorValue = (int) (currColor.getRed() +
-				// currColor.getBlue() + currColor.getGreen());
+		for (int row = 0; row < getPicHeight(); row++) {
+			for (int col = 0; col < getPicWidth(); col++) {
+				//int currPixel = _pixelArray[row][col];
 
 				// get adjacent pixels:
-				ArrayList neighbors = getAdjacentPixels(i, j);
+				ArrayList neighbors = getAdjacentPixels(row, col);
 
 				// iterate on neighbors to calculate color importance
 				/*
@@ -131,10 +130,8 @@ public class MyPicturePane extends PicturePane {
 					// calculate difference magnitude between pixel and neighbor
 					// here
 
-					Color currColor = getPixelColor(i, j);
+					Color currColor = getPixelColor(row, col);
 					int colorValue = (int) (currColor.getRed() + currColor.getBlue() + currColor.getGreen());
-
-					// get color of neighbor (see line 80,81)
 
 					Color neighbColor = getPixelColor((int) neighbor.getX(), (int) neighbor.getY());
 					int neighbColorValue = (int) (neighbColor.getRed() + neighbColor.getBlue()
@@ -143,7 +140,8 @@ public class MyPicturePane extends PicturePane {
 					int diff = Math.abs(colorValue - neighbColorValue);
 
 					// put in values array
-					_colorImportance[i][j] = diff;
+					
+					_colorImportance[row][col] = diff;
 				}
 			}
 		}
@@ -192,7 +190,7 @@ public class MyPicturePane extends PicturePane {
 
 		// fill in bottom row of costs
 		for (int j = 0; j < getPicWidth(); j++) {
-			_costsArray[getPicHeight() - 1][j] = _colorImportance[getPicHeight() - 1][j];
+			_costsArray[getPicHeight()-1][j] = _colorImportance[getPicHeight() - 1][j];
 		}
 
 		// in case two seams have the same cost, pick the first seam from the

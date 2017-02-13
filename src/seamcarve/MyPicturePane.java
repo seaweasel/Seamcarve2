@@ -48,8 +48,6 @@ public class MyPicturePane extends PicturePane {
 		_costsArray = new int[getPicHeight()][getPicWidth()];
 		_dirsArray = new int[getPicHeight()-1][getPicWidth()];
 		
-//		calculateColorImportance();
-//		calcCostsAndDirs();
 		@SuppressWarnings("unused")
 		int x = 0;
 		
@@ -114,6 +112,7 @@ public class MyPicturePane extends PicturePane {
 	}
 
 	public void calculateColorImportance() {
+		int x;
 		//replace i/j with col/row
 		//swap getPicWidth() a& getPicHeight() below
 		for (int row = 0; row < getPicHeight(); row++) {
@@ -146,13 +145,15 @@ public class MyPicturePane extends PicturePane {
 					// put in values array
 					
 					totalDiff  += diff;
-					int x = 0;
+					x = 0;
 				}
 				_colorImportance[row][col] = totalDiff;
-				int x = 1;
+				x = 1;
 				
 			}
+			x = 2;
 		}
+		x = 3;
 	}
 
 	public ArrayList<Point> getAdjacentPixels(int row, int col) {

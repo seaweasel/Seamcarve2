@@ -48,8 +48,8 @@ public class MyPicturePane extends PicturePane {
 		_costsArray = new int[getPicHeight()][getPicWidth()];
 		_dirsArray = new int[getPicHeight()-1][getPicWidth()];
 		
-		calculateColorImportance();
-		calcCostsAndDirs();
+//		calculateColorImportance();
+//		calcCostsAndDirs();
 		@SuppressWarnings("unused")
 		int x = 0;
 		
@@ -81,15 +81,16 @@ public class MyPicturePane extends PicturePane {
 	 * @return the lowest cost seam of the current image
 	 */
 	protected int[] findLowestCostSeam() {
-	
+		calculateColorImportance();
+		calcCostsAndDirs();
 		// Returns index of min in top row
 		int min_col = findMin(_costsArray[0]);
 		//lowest cost seam
 		int[] seam = new int[getPicHeight()];
 		seam[0] = _costsArray[0][min_col];
 		
-		for(int row = 0; row < getPicHeight(); row++){
-			seam[row+1] = seam[row] + _dirsArray[seam[row]][row];
+		for(int row = 0; row < getPicHeight()-1; row++){
+			seam[row+1] = seam[row] + _dirsArray[row][seam[row]];
 		}
 		
 		return seam;

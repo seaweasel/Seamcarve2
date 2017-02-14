@@ -78,9 +78,7 @@ public class MyPicturePane extends PicturePane {
 		calcCostsAndDirs();
 
 		// Returns index of min in top row
-		int min_col = findMin(_costsArray[0]);
-
-		// min_col = randMinCol(_costsArray[0]);
+		int min_col = randMinCol(_costsArray[0]);
 
 		// lowest cost seam
 		int[] seam = new int[getPicHeight()];
@@ -123,23 +121,6 @@ public class MyPicturePane extends PicturePane {
 		// pick one index at random
 		Random rando = new Random();
 		return (int) minIndexes.get(rando.nextInt(minIndexes.size()));
-	}
-
-	/*
-	 * return index of lowest element in int array
-	 */
-	public int findMin(int[] nums) {
-		int minValue = nums[0];
-		int minDex = 0;
-
-		for (int i = 0; i < nums.length; i++) {
-			if (nums[i] < minValue) {
-				minValue = nums[i];
-				minDex = i;
-			}
-		}
-
-		return minDex;
 	}
 
 	public void calculateColorImportance() {

@@ -42,10 +42,6 @@ public class MyPicturePane extends PicturePane {
 		String defaultFileName = "/Users/Akhil/Pictures/honey.jpg";
 		defaultFileName = filename;
 		filename = _picture;
-		
-		_pixelArray = new int[getPicHeight()][getPicWidth()];
-		
-			
 	}
 
 	/**
@@ -74,50 +70,51 @@ public class MyPicturePane extends PicturePane {
 	 * @return the lowest cost seam of the current image
 	 */
 	protected int[] findLowestCostSeam() {
+		_pixelArray = new int[getPicHeight()][getPicWidth()];
 		_colorImportance = new int[getPicHeight()][getPicWidth()];
 		_costsArray = new int[getPicHeight()][getPicWidth()];
-		_dirsArray = new int[getPicHeight()-1][getPicWidth()];
-		
+		_dirsArray = new int[getPicHeight() - 1][getPicWidth()];
+
 		calculateColorImportance();
 		calcCostsAndDirs();
 		// Returns index of min in top row
 		int min_col = findMin(_costsArray[0]);
-		//lowest cost seam
+		// lowest cost seam
 		int[] seam = new int[getPicHeight()];
 		seam[0] = _costsArray[0][min_col];
-		
-		for(int row = 0; row < getPicHeight()-1; row++){
-			seam[row+1] = seam[row] + _dirsArray[row][seam[row]];
+
+		for (int row = 0; row < getPicHeight() - 1; row++) {
+			seam[row + 1] = seam[row] + _dirsArray[row][seam[row]];
 		}
-		
+
 		return seam;
 	}
-	
+
 	/*
 	 * return index of lowest element in int array
 	 */
-	public int findMin(int[] nums){
+	public int findMin(int[] nums) {
 		int minValue = nums[0];
 		int minDex = 0;
-		
-		for(int i = 0; i < nums.length; i++){
-			if(nums[i] < minValue){
+
+		for (int i = 0; i < nums.length; i++) {
+			if (nums[i] < minValue) {
 				minValue = nums[i];
 				minDex = i;
 			}
 		}
-		
+
 		return minDex;
 	}
 
 	public void calculateColorImportance() {
 		System.out.println("Hi!");
 		int x;
-		//replace i/j with col/row
-		//swap getPicWidth() a& getPicHeight() below
+		// replace i/j with col/row
+		// swap getPicWidth() a& getPicHeight() below
 		for (int row = 0; row < getPicHeight(); row++) {
 			for (int col = 0; col < getPicWidth(); col++) {
-				//int currPixel = _pixelArray[row][col];
+				// int currPixel = _pixelArray[row][col];
 
 				// get adjacent pixels:
 				ArrayList<Point> neighbors = getAdjacentPixels(row, col);
@@ -134,7 +131,8 @@ public class MyPicturePane extends PicturePane {
 					// here
 
 					Color currColor = getPixelColor(row, col);
-					int colorValue = (int) (255* currColor.getRed() + 255 * currColor.getBlue() + 255 * currColor.getGreen());
+					int colorValue = (int) (255 * currColor.getRed() + 255 * currColor.getBlue()
+							+ 255 * currColor.getGreen());
 
 					Color neighbColor = getPixelColor((int) neighbor.getY(), (int) neighbor.getX());
 					int neighbColorValue = (int) (255 * neighbColor.getRed() + 255 * neighbColor.getBlue()
@@ -143,13 +141,13 @@ public class MyPicturePane extends PicturePane {
 					int diff = Math.abs(colorValue - neighbColorValue);
 
 					// put in values array
-					
-					totalDiff  += diff;
+
+					totalDiff += diff;
 					x = 0;
 				}
 				_colorImportance[row][col] = totalDiff;
 				x = 1;
-				
+
 			}
 			x = 2;
 		}
@@ -199,8 +197,8 @@ public class MyPicturePane extends PicturePane {
 
 		// fill in bottom row of costs
 		for (int j = 0; j < getPicWidth(); j++) {
-			_costsArray[getPicHeight()-1][j] = _colorImportance[getPicHeight() - 1][j];
-			
+			_costsArray[getPicHeight() - 1][j] = _colorImportance[getPicHeight() - 1][j];
+
 		}
 
 		// in case two seams have the same cost, pick the first seam from the
@@ -244,7 +242,7 @@ public class MyPicturePane extends PicturePane {
 				int cost = _colorImportance[row][col] + smallest;
 				_costsArray[row][col] = cost;
 				_dirsArray[row][col] = dir;
-				
+
 			}
 
 		}

@@ -2,6 +2,7 @@ package seamcarve;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 import java.awt.Point;
 
 import javafx.scene.layout.BorderPane;
@@ -88,6 +89,38 @@ public class MyPicturePane extends PicturePane {
 		}
 
 		return seam;
+	}
+
+	/*
+	 * return index of lowest element in int array if more than 1 lowest value,
+	 * pick a random one
+	 */
+	public int randMinCol(int[] nums) {
+		int minValue = nums[0];
+
+		// left seam is default
+		ArrayList<Integer> minIndexes = new ArrayList<Integer>();
+		minIndexes.add(new Integer(0));
+		minValue = nums[0];
+
+		for (int i = 0; i < nums.length; i++) {
+
+			// new lowest value found
+			if (nums[i] < minValue) {
+				minValue = nums[i];
+				minIndexes.clear();
+				minIndexes.add(new Integer(i));
+			}
+			// other seam w/ same cost found
+			else if (nums[i] == minValue) {
+				minIndexes.add(new Integer(i));
+			}
+
+		}
+
+		// pick one index at random
+		Random rando = new Random();
+		return (int) minIndexes.get(rando.nextInt(minIndexes.size()));
 	}
 
 	/*

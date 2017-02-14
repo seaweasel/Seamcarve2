@@ -108,8 +108,6 @@ public class MyPicturePane extends PicturePane {
 	}
 
 	public void calculateColorImportance() {
-		System.out.println("Hi!");
-		int x;
 		// replace i/j with col/row
 		// swap getPicWidth() a& getPicHeight() below
 		for (int row = 0; row < getPicHeight(); row++) {
@@ -143,16 +141,10 @@ public class MyPicturePane extends PicturePane {
 					// put in values array
 
 					totalDiff += diff;
-					x = 0;
 				}
 				_colorImportance[row][col] = totalDiff;
-				x = 1;
-
 			}
-			x = 2;
 		}
-		x = 3;
-		System.out.println(x);
 	}
 
 	public ArrayList<Point> getAdjacentPixels(int row, int col) {

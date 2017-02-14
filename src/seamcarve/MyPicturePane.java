@@ -40,8 +40,6 @@ public class MyPicturePane extends PicturePane {
 	 */
 	public MyPicturePane(BorderPane pane, String filename) {
 		super(pane, filename);
-		String defaultFileName = "/Users/Akhil/Pictures/honey.jpg";
-		defaultFileName = filename;
 		filename = _picture;
 	}
 
@@ -78,8 +76,12 @@ public class MyPicturePane extends PicturePane {
 
 		calculateColorImportance();
 		calcCostsAndDirs();
+
 		// Returns index of min in top row
 		int min_col = findMin(_costsArray[0]);
+
+		// min_col = randMinCol(_costsArray[0]);
+
 		// lowest cost seam
 		int[] seam = new int[getPicHeight()];
 		seam[0] = _costsArray[0][min_col];
@@ -190,6 +192,7 @@ public class MyPicturePane extends PicturePane {
 		ArrayList<Point> neighbs = new ArrayList();
 		// top
 		try {
+			// create pixel to see if valid pixel
 			int pixel = _pixelArray[row - 1][col];
 			neighbs.add(new Point(col, row - 1));
 		} catch (IndexOutOfBoundsException whatever) {
